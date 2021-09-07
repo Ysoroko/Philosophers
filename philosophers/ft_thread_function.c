@@ -6,7 +6,7 @@
 /*   By: ysoroko <ysoroko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 14:32:41 by ysoroko           #+#    #+#             */
-/*   Updated: 2021/09/07 16:46:19 by ysoroko          ###   ########.fr       */
+/*   Updated: 2021/09/07 17:03:57 by ysoroko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,10 @@
 
 static void	ft_print_aid(t_philo *philo, char *state_msg)
 {
-	ft_putnbr(philo->current_time - philo->start_time);
-	ft_putchar_fd(' ', STDOUT);
-	ft_putstr_fd(philo->ph_num, STDOUT);
-	ft_putchar_fd(' ', STDOUT);
-	ft_putendl_fd(state_msg, STDOUT);
+	int	current_time;
+
+	current_time = philo->current_time - philo->start_time;
+	printf("%d %s %s\n", current_time, philo->ph_num, state_msg);
 }
 
 /// Prints the message status as required per subject
