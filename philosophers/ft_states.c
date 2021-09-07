@@ -6,7 +6,7 @@
 /*   By: ysoroko <ysoroko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 12:03:02 by ysoroko           #+#    #+#             */
-/*   Updated: 2021/09/07 16:12:32 by ysoroko          ###   ########.fr       */
+/*   Updated: 2021/09/07 16:46:05 by ysoroko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,17 @@ static void	ft_lock_forks(t_philo *ph)
 		if (ph->n_times_ate == 0)
 			usleep(500);
 		pthread_mutex_lock(ph->left_fork);
+		ft_print_status(ph, FORK);
 		pthread_mutex_lock(ph->right_fork);
+		ft_print_status(ph, FORK);
 	}
 	else if (!(ph->philo_number % 2))
 	{
 		pthread_mutex_lock(ph->right_fork);
+		ft_print_status(ph, FORK);
 		pthread_mutex_lock(ph->left_fork);
+		ft_print_status(ph, FORK);
 	}
-	ft_print_status(ph, FORK);
 }
 
 /// Philosopher's "eating" state

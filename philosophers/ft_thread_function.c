@@ -6,27 +6,19 @@
 /*   By: ysoroko <ysoroko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 14:32:41 by ysoroko           #+#    #+#             */
-/*   Updated: 2021/09/07 16:10:01 by ysoroko          ###   ########.fr       */
+/*   Updated: 2021/09/07 16:46:19 by ysoroko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philosophers.h"
 
-static void	ft_print_aid(t_philo *philo, int state, char *state_msg)
+static void	ft_print_aid(t_philo *philo, char *state_msg)
 {
 	ft_putnbr(philo->current_time - philo->start_time);
 	ft_putchar_fd(' ', STDOUT);
 	ft_putstr_fd(philo->ph_num, STDOUT);
 	ft_putchar_fd(' ', STDOUT);
 	ft_putendl_fd(state_msg, STDOUT);
-	if (state == FORK && philo->n_philos != 1)
-	{
-		ft_putnbr(philo->current_time - philo->start_time);
-		ft_putchar_fd(' ', STDOUT);
-		ft_putstr_fd(philo->ph_num, STDOUT);
-		ft_putchar_fd(' ', STDOUT);
-		ft_putendl_fd(state_msg, STDOUT);
-	}
 }
 
 /// Prints the message status as required per subject
@@ -49,7 +41,7 @@ int	ft_print_status(t_philo *philo, int state)
 		state_msg = "is thinking";
 	else if (state == DIED)
 		state_msg = "died";
-	ft_print_aid(philo, state, state_msg);
+	ft_print_aid(philo, state_msg);
 	if (state != DIED)
 		pthread_mutex_unlock(philo->displaying);
 	return (0);
