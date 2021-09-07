@@ -6,7 +6,7 @@
 /*   By: ysoroko <ysoroko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/02 11:40:54 by ysoroko           #+#    #+#             */
-/*   Updated: 2021/09/06 16:33:43 by ysoroko          ###   ########.fr       */
+/*   Updated: 2021/09/07 13:33:00 by ysoroko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@
 static int	ft_check_philo_death(t_philo **philos, int i)
 {
 	useconds_t		current_time;
-	useconds_t		time_without_eating;
+	int				time_without_eating;
 
 	if (ft_get_current_time(philos[i]))
 		return (-1);
-	current_time = (philos[i])->current_time - (philos[i])->start_time;
-	time_without_eating = current_time - (philos[i])->time_last_time_ate;
-	if ((int)time_without_eating >= philos[i]->t_to_die)
+	current_time = (philos[i])->current_time - philos[i]->start_time;
+	time_without_eating = current_time - (int)(philos[i])->time_last_time_ate;
+	if ((int)time_without_eating > philos[i]->t_to_die)
 	{
 		*(philos[i]->died) = 1;
 		ft_print_status(philos[i], DIED);

@@ -6,7 +6,7 @@
 /*   By: ysoroko <ysoroko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:12:48 by ysoroko           #+#    #+#             */
-/*   Updated: 2021/09/03 13:08:29 by ysoroko          ###   ########.fr       */
+/*   Updated: 2021/09/07 13:10:41 by ysoroko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ int	ft_get_current_time(t_philo *philo)
 /// Returns -1 in case of error or 0 in case of success.
 int	ft_msleep(int n_milliseconds)
 {
-	useconds_t	in_microseconds;
+	int	in_microseconds;
 
-	in_microseconds = (useconds_t)(n_milliseconds * 1000);
+	in_microseconds = n_milliseconds * 1000;
 	return (usleep(in_microseconds));
 }
 
@@ -62,7 +62,7 @@ int	ft_update_last_time_ate(t_philo *philo)
 
 	if (gettimeofday(&time_value, NULL) == -1)
 		return (-1);
-	in_milliseconds = time_value.tv_usec / 1000;
+	in_milliseconds = time_value.tv_usec / 1000 + time_value.tv_sec * 1000;
 	philo->time_last_time_ate = in_milliseconds - philo->start_time;
 	return (0);
 }

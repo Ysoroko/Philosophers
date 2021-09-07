@@ -6,7 +6,7 @@
 /*   By: ysoroko <ysoroko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 12:03:02 by ysoroko           #+#    #+#             */
-/*   Updated: 2021/09/06 17:33:23 by ysoroko          ###   ########.fr       */
+/*   Updated: 2021/09/07 13:45:38 by ysoroko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,9 @@ static int	ft_lock_forks(t_philo *ph)
 {
 	if (ph->philo_number % 2)
 	{
-		if (ph->n_times_ate == 0)
-			ft_msleep(3);
 		if (pthread_mutex_lock(ph->left_fork) || ft_print_status(ph, FORK))
 			return (ft_puterr("Failed to lock left fork"));
+		usleep(500);
 		if (pthread_mutex_lock(ph->right_fork) || ft_print_status(ph, FORK))
 			return (ft_puterr("Failed to lock right fork"));
 	}
@@ -96,22 +95,13 @@ int	ft_eat(t_philo *philo)
 		return (-1);
 	if (ft_print_status(philo, EATING))
 		return (-1);
-	if (ft_msleep(philo->t_to_eat) == -1)
-		return (ft_puterr("Failed to call usleep function"));
-	if (philo->philo_number % 2)
-	{
-		if (pthread_mutex_unlock(philo->left_fork)
-			|| pthread_mutex_unlock(philo->right_fork))
-			return (ft_puterr("Failed to unlock the forks"));
-	}
-	else
-	{
-		if (pthread_mutex_unlock(philo->right_fork)
-			|| pthread_mutex_unlock(philo->left_fork))
-			return (ft_puterr("Failed to unlock the forks"));
-	}
 	if (ft_update_last_time_ate(philo))
 		return (ft_puterr("Couldn't update last time the philosopher ate"));
+	if (ft_msleep(philo->t_to_eat) == -1)
+		return (ft_puterr("Failed to call usleep function"));
+	if (pthread_mutex_unlock(philo->right_fork)
+		|| pthread_mutex_unlock(philo->left_fork))
+		return (ft_puterr("Failed to unlock the forks"));
 	philo->n_times_ate++;
 	return (0);
 }
