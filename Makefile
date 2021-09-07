@@ -6,7 +6,7 @@
 #    By: ysoroko <ysoroko@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/08/16 12:05:15 by ysoroko           #+#    #+#              #
-#    Updated: 2021/09/06 16:30:44 by ysoroko          ###   ########.fr        #
+#    Updated: 2021/09/07 13:51:35 by ysoroko          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -122,6 +122,9 @@ test_min_d: all
 
 test_max: all
 		./$(EXECUTABLE) 200 800 200 200
+
+test_max_d: all
+		./$(EXECUTABLE) 200 310 200 100
 # -------------------------------------------------------------------
 
 .PHONY:	all clean fclean re test_one_philo test1 test2 test2_count test3 test4 test_min test_min_d test_max
