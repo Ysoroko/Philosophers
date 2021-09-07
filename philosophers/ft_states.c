@@ -6,7 +6,7 @@
 /*   By: ysoroko <ysoroko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 12:03:02 by ysoroko           #+#    #+#             */
-/*   Updated: 2021/09/07 15:54:06 by ysoroko          ###   ########.fr       */
+/*   Updated: 2021/09/07 16:12:32 by ysoroko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ static void	ft_lock_forks(t_philo *ph)
 {
 	if (ph->philo_number % 2)
 	{
-		usleep(500);
+		if (ph->n_times_ate == 0)
+			usleep(500);
 		pthread_mutex_lock(ph->left_fork);
 		pthread_mutex_lock(ph->right_fork);
 	}
@@ -77,19 +78,11 @@ static void	ft_lock_forks(t_philo *ph)
 int	ft_eat(t_philo *philo)
 {
 	ft_lock_forks(philo);
-	ft_print_status(philo, EATING);
 	ft_update_last_time_ate(philo);
+	ft_print_status(philo, EATING);
 	ft_msleep(philo->t_to_eat);
-	if (philo->philo_number % 2)
-	{
-		pthread_mutex_unlock(philo->right_fork);
-		pthread_mutex_unlock(philo->left_fork);
-	}
-	else
-	{
-		pthread_mutex_unlock(philo->left_fork);
-		pthread_mutex_unlock(philo->right_fork);
-	}
+	pthread_mutex_unlock(philo->right_fork);
+	pthread_mutex_unlock(philo->left_fork);
 	philo->n_times_ate++;
 	return (0);
 }
@@ -115,5 +108,6 @@ int	ft_sleep(t_philo *philo)
 int	ft_think(t_philo *philo)
 {
 	ft_print_status(philo, THINKING);
+	usleep(50);
 	return (0);
 }

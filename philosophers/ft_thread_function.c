@@ -6,7 +6,7 @@
 /*   By: ysoroko <ysoroko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 14:32:41 by ysoroko           #+#    #+#             */
-/*   Updated: 2021/09/07 15:55:22 by ysoroko          ###   ########.fr       */
+/*   Updated: 2021/09/07 16:10:01 by ysoroko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	*ft_thread_function(void *arg)
 
 	philo = (t_philo *)arg;
 	while (*(philo->died))
-		ft_msleep(10);
+		usleep(50);
 	ft_setup_start_time(philo);
 	if (philo->n_philos == 1)
 		ft_eat_alone(philo);
