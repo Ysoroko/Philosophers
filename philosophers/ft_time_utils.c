@@ -6,7 +6,7 @@
 /*   By: ysoroko <ysoroko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:12:48 by ysoroko           #+#    #+#             */
-/*   Updated: 2021/09/07 16:06:56 by ysoroko          ###   ########.fr       */
+/*   Updated: 2021/09/07 16:33:59 by ysoroko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,23 @@ int	ft_get_current_time(t_philo *philo)
 /// Returns -1 in case of error or 0 in case of success.
 int	ft_msleep(int n_milliseconds)
 {
-	int	in_microseconds;
+	struct timeval	time_value;
+	int				start_time;
+	int				current_time;
+	int				in_microseconds;
 
+	gettimeofday(&time_value, NULL);
+	start_time = time_value.tv_usec / 1000 + time_value.tv_sec * 1000;
 	in_microseconds = n_milliseconds * 1000;
-	return (usleep(in_microseconds));
+	while (1)
+	{
+		gettimeofday(&time_value, NULL);
+		current_time = time_value.tv_usec / 1000 + time_value.tv_sec * 1000;
+		if (current_time - start_time >= n_milliseconds)
+			return (1);
+		usleep(SLEEP_PRECISION);
+	}
+	return (0);
 }
 
 /// This function will update philo->t_without_eating component

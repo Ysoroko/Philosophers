@@ -6,7 +6,7 @@
 /*   By: ysoroko <ysoroko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/16 11:20:51 by ysoroko           #+#    #+#             */
-/*   Updated: 2021/09/07 15:53:53 by ysoroko          ###   ########.fr       */
+/*   Updated: 2021/09/07 16:29:46 by ysoroko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef struct s_death_struct
 # define STDERR 2
 # define BASE_TEN "0123456789"
 # define INT_MAX 2147483647
+# define SLEEP_PRECISION 500
 # define EATING 1
 # define FORK 2
 # define THINKING 3
