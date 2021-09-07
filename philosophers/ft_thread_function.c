@@ -6,68 +6,11 @@
 /*   By: ysoroko <ysoroko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 14:32:41 by ysoroko           #+#    #+#             */
-/*   Updated: 2021/09/07 13:42:54 by ysoroko          ###   ########.fr       */
+/*   Updated: 2021/09/07 15:22:09 by ysoroko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philosophers.h"
-
-/// Joins pref and suff and returns the result of the malloc'd copy
-static char	*ft_strjoin(char const *pref, char const *suff)
-{
-	char	*ret;
-	char	*my_pref;
-	char	*my_suff;
-	size_t	i;
-	size_t	j;
-
-	if (pref == 0 || suff == 0)
-		return (0);
-	i = -1;
-	j = -1;
-	my_pref = (char *)(pref);
-	my_suff = (char *)(suff);
-	ret = malloc(sizeof(char) * (ft_strlen(my_pref) + ft_strlen(my_suff) + 2));
-	if (ret == 0)
-		return (0);
-	while (pref[++i] != '\0')
-		ret[i] = pref[i];
-	ret[i++] = '\t';
-	while (suff[++j] != '\0')
-	{
-		ret[i] = suff[j];
-		i++;
-	}
-	ret[i] = '\0';
-	return (ret);
-}
-
-/// Creates a temporary buffer with the message and prints it to the output.
-/// Is more optimal than using printf or multiple calls to write.
-static int	ft_message_to_print(t_philo *philo, char *state_msg)
-{
-	char	*msg1;
-	char	*msg2;
-	char	*time;
-
-	time = ft_itoa((int)(philo->current_time - philo->start_time));
-	if (!time)
-		return (-1);
-	msg1 = ft_strjoin(time, philo->ph_num);
-	if (!msg1)
-		return (ft_free_int_ret(time, "Failed to strjoin philo to time", -1));
-	msg2 = ft_strjoin(msg1, state_msg);
-	if (!msg2)
-	{
-		ft_free(time, NULL, NULL);
-		return (ft_free_int_ret(msg1, "Malloc error", -1));
-	}
-	ft_putendl_fd(msg2, STDOUT);
-	free(msg1);
-	free(msg2);
-	free(time);
-	return (0);
-}
 
 /// Prints the message status as required per subject
 /// Ex: "2000 1 is sleeping"
@@ -77,10 +20,8 @@ int	ft_print_status(t_philo *philo, int state)
 	char	*state_msg;
 
 	state_msg = NULL;
-	if (pthread_mutex_lock(philo->displaying))
-		return (ft_puterr("Failed to lock display mutex"));
-	if (ft_get_current_time(philo) == -1)
-		return (ft_puterr("Failed to get current time"));
+	pthread_mutex_lock(philo->displaying);
+	ft_get_current_time(philo);
 	if (state == EATING)
 		state_msg = "is eating";
 	else if (state == FORK)
@@ -91,10 +32,13 @@ int	ft_print_status(t_philo *philo, int state)
 		state_msg = "is thinking";
 	else if (state == DIED)
 		state_msg = "died";
-	ft_message_to_print(philo, state_msg);
+	ft_putnbr(philo->current_time - philo->start_time);
+	ft_putchar_fd(' ', STDOUT);
+	ft_putstr_fd(philo->ph_num, STDOUT);
+	ft_putchar_fd(' ', STDOUT);
+	ft_putendl_fd(state_msg, STDOUT);
 	if (state != DIED)
-		if (pthread_mutex_unlock(philo->displaying))
-			return (ft_puterr("Failed to unlock display mutex"));
+		pthread_mutex_unlock(philo->displaying);
 	return (0);
 }
 
@@ -126,9 +70,8 @@ void	*ft_thread_function(void *arg)
 
 	philo = (t_philo *)arg;
 	while (*(philo->died))
-		usleep(1);
-	if (ft_setup_start_time(philo) == -1)
-		return (NULL);
+		ft_msleep(10);
+	ft_setup_start_time(philo);
 	ft_philo_routine(philo);
 	return (philo);
 }

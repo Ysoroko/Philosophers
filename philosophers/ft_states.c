@@ -6,7 +6,7 @@
 /*   By: ysoroko <ysoroko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 12:03:02 by ysoroko           #+#    #+#             */
-/*   Updated: 2021/09/07 13:45:38 by ysoroko          ###   ########.fr       */
+/*   Updated: 2021/09/07 15:41:01 by ysoroko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,10 @@
 /// He will eventually die
 static int	ft_eat_alone(t_philo *philo)
 {
-	if (pthread_mutex_lock(philo->left_fork))
-		return (ft_puterr("Failed to lock left fork"));
-	if (ft_print_status(philo, FORK))
-	{
-		pthread_mutex_unlock(philo->left_fork);
-		return (-1);
-	}
-	if (ft_msleep(philo->t_to_die + 10))
-	{
-		pthread_mutex_unlock(philo->left_fork);
-		return (-1);
-	}
-	if (pthread_mutex_unlock(philo->left_fork))
-		return (ft_puterr("Failed to unlock left fork"));
+	pthread_mutex_lock(philo->left_fork);
+	ft_print_status(philo, FORK);
+	ft_msleep(philo->t_to_die + 10);
+	pthread_mutex_unlock(philo->left_fork);
 	return (0);
 }
 
@@ -61,24 +51,23 @@ static int	ft_eat_alone(t_philo *philo)
 /// Odd philosophers will take left fork first, then right (and wait a bit)
 /// Even philosophers will take right fork first, then left
 /// This is done to avoid the death lock
-static int	ft_lock_forks(t_philo *ph)
+static void	ft_lock_forks(t_philo *ph)
 {
 	if (ph->philo_number % 2)
 	{
-		if (pthread_mutex_lock(ph->left_fork) || ft_print_status(ph, FORK))
-			return (ft_puterr("Failed to lock left fork"));
+		pthread_mutex_lock(ph->left_fork);
+		ft_print_status(ph, FORK);
 		usleep(500);
-		if (pthread_mutex_lock(ph->right_fork) || ft_print_status(ph, FORK))
-			return (ft_puterr("Failed to lock right fork"));
+		pthread_mutex_lock(ph->right_fork);
+		ft_print_status(ph, FORK);
 	}
 	else if (!(ph->philo_number % 2))
 	{
-		if (pthread_mutex_lock(ph->right_fork) || ft_print_status(ph, FORK))
-			return (ft_puterr("Failed to lock left fork"));
-		if (pthread_mutex_lock(ph->left_fork) || ft_print_status(ph, FORK))
-			return (ft_puterr("Failed to lock right fork"));
+		pthread_mutex_lock(ph->right_fork);
+		ft_print_status(ph, FORK);
+		pthread_mutex_lock(ph->left_fork);
+		ft_print_status(ph, FORK);
 	}
-	return (0);
 }
 
 /// Philosopher's "eating" state
@@ -91,17 +80,20 @@ int	ft_eat(t_philo *philo)
 {
 	if (philo->n_philos == 1)
 		return (ft_eat_alone(philo));
-	if (ft_lock_forks(philo))
-		return (-1);
-	if (ft_print_status(philo, EATING))
-		return (-1);
-	if (ft_update_last_time_ate(philo))
-		return (ft_puterr("Couldn't update last time the philosopher ate"));
-	if (ft_msleep(philo->t_to_eat) == -1)
-		return (ft_puterr("Failed to call usleep function"));
-	if (pthread_mutex_unlock(philo->right_fork)
-		|| pthread_mutex_unlock(philo->left_fork))
-		return (ft_puterr("Failed to unlock the forks"));
+	ft_lock_forks(philo);
+	ft_print_status(philo, EATING);
+	ft_update_last_time_ate(philo);
+	ft_msleep(philo->t_to_eat);
+	if (philo->philo_number % 2)
+	{
+		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(philo->left_fork);
+	}
+	else
+	{
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_unlock(philo->right_fork);
+	}
 	philo->n_times_ate++;
 	return (0);
 }
@@ -116,8 +108,8 @@ int	ft_sleep(t_philo *philo)
 {
 	if (philo->n_to_eat && philo->n_times_ate >= philo->n_to_eat)
 		return (1);
-	if (ft_print_status(philo, SLEEPING) || ft_msleep(philo->t_to_sleep))
-		return (-1);
+	ft_print_status(philo, SLEEPING);
+	ft_msleep(philo->t_to_sleep);
 	return (0);
 }
 
@@ -126,7 +118,6 @@ int	ft_sleep(t_philo *philo)
 /// Returns 0 in case of success, -1 in case of error
 int	ft_think(t_philo *philo)
 {
-	if (ft_print_status(philo, THINKING))
-		return (-1);
+	ft_print_status(philo, THINKING);
 	return (0);
 }

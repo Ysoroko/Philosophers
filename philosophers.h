@@ -6,7 +6,7 @@
 /*   By: ysoroko <ysoroko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/16 11:20:51 by ysoroko           #+#    #+#             */
-/*   Updated: 2021/09/06 16:31:47 by ysoroko          ###   ########.fr       */
+/*   Updated: 2021/09/07 15:11:00 by ysoroko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <stdlib.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <sys/errno.h>
+# include <string.h>
 
 /*
 ** STRUCTURES
@@ -89,7 +91,7 @@ typedef struct s_death_struct
 void		ft_putchar_fd(char c, int fd);
 void		ft_putstr_fd(char *str, int fd);
 void		ft_putendl_fd(char *str, int fd);
-void		ft_putnbr_fd(int n, int fd);
+void		ft_putnbr(int n);
 int			ft_puterr(char *str);
 void		*ft_puterr_ptr(char *str);
 int			ft_strlen(char *str);

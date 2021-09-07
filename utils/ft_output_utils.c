@@ -6,7 +6,7 @@
 /*   By: ysoroko <ysoroko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/16 11:24:33 by ysoroko           #+#    #+#             */
-/*   Updated: 2021/09/04 12:09:07 by ysoroko          ###   ########.fr       */
+/*   Updated: 2021/09/07 14:58:40 by ysoroko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,28 +48,6 @@ void	ft_putendl_fd(char *str, int fd)
 		ft_putchar_fd(str[i], fd);
 	}
 	ft_putchar_fd('\n', fd);
-}
-
-/// Displays the integer n argument on the specified file descriptor
-void	ft_putnbr_fd(int n, int fd)
-{
-	unsigned int	m;
-
-	m = (unsigned int)n;
-	if (n < 0)
-	{
-		ft_putchar_fd('-', fd);
-		m *= -1;
-	}
-	if (m >= 10)
-	{
-		ft_putnbr_fd(m / 10, fd);
-		ft_putnbr_fd(m % 10, fd);
-	}
-	else
-	{
-		ft_putchar_fd('0' + m, fd);
-	}
 }
 
 /// Displays "Error" followed by its argument on STDERR (in red color)

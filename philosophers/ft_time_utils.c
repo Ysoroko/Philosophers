@@ -6,7 +6,7 @@
 /*   By: ysoroko <ysoroko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 10:12:48 by ysoroko           #+#    #+#             */
-/*   Updated: 2021/09/07 13:10:41 by ysoroko          ###   ########.fr       */
+/*   Updated: 2021/09/07 15:20:41 by ysoroko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ int	ft_setup_start_time(t_philo *philo)
 	struct timeval	time_value;
 	suseconds_t		in_milliseconds;
 
-	if (gettimeofday(&time_value, NULL) == -1)
-		return (-1);
+	gettimeofday(&time_value, NULL);
 	in_milliseconds = time_value.tv_usec / 1000 + time_value.tv_sec * 1000;
 	philo->start_time = in_milliseconds;
 	return (0);
@@ -34,8 +33,7 @@ int	ft_get_current_time(t_philo *philo)
 	suseconds_t		in_milliseconds;
 	suseconds_t		start_time;
 
-	if (gettimeofday(&time_value, NULL) == -1)
-		return (-1);
+	gettimeofday(&time_value, NULL);
 	start_time = philo->start_time;
 	in_milliseconds = time_value.tv_usec / 1000 + time_value.tv_sec * 1000;
 	philo->current_time = in_milliseconds;
@@ -60,8 +58,7 @@ int	ft_update_last_time_ate(t_philo *philo)
 	struct timeval	time_value;
 	useconds_t		in_milliseconds;
 
-	if (gettimeofday(&time_value, NULL) == -1)
-		return (-1);
+	gettimeofday(&time_value, NULL);
 	in_milliseconds = time_value.tv_usec / 1000 + time_value.tv_sec * 1000;
 	philo->time_last_time_ate = in_milliseconds - philo->start_time;
 	return (0);
