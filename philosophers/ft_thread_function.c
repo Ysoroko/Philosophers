@@ -6,11 +6,28 @@
 /*   By: ysoroko <ysoroko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 14:32:41 by ysoroko           #+#    #+#             */
-/*   Updated: 2021/09/07 15:22:09 by ysoroko          ###   ########.fr       */
+/*   Updated: 2021/09/07 15:55:22 by ysoroko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philosophers.h"
+
+static void	ft_print_aid(t_philo *philo, int state, char *state_msg)
+{
+	ft_putnbr(philo->current_time - philo->start_time);
+	ft_putchar_fd(' ', STDOUT);
+	ft_putstr_fd(philo->ph_num, STDOUT);
+	ft_putchar_fd(' ', STDOUT);
+	ft_putendl_fd(state_msg, STDOUT);
+	if (state == FORK && philo->n_philos != 1)
+	{
+		ft_putnbr(philo->current_time - philo->start_time);
+		ft_putchar_fd(' ', STDOUT);
+		ft_putstr_fd(philo->ph_num, STDOUT);
+		ft_putchar_fd(' ', STDOUT);
+		ft_putendl_fd(state_msg, STDOUT);
+	}
+}
 
 /// Prints the message status as required per subject
 /// Ex: "2000 1 is sleeping"
@@ -32,11 +49,7 @@ int	ft_print_status(t_philo *philo, int state)
 		state_msg = "is thinking";
 	else if (state == DIED)
 		state_msg = "died";
-	ft_putnbr(philo->current_time - philo->start_time);
-	ft_putchar_fd(' ', STDOUT);
-	ft_putstr_fd(philo->ph_num, STDOUT);
-	ft_putchar_fd(' ', STDOUT);
-	ft_putendl_fd(state_msg, STDOUT);
+	ft_print_aid(philo, state, state_msg);
 	if (state != DIED)
 		pthread_mutex_unlock(philo->displaying);
 	return (0);
@@ -72,6 +85,8 @@ void	*ft_thread_function(void *arg)
 	while (*(philo->died))
 		ft_msleep(10);
 	ft_setup_start_time(philo);
+	if (philo->n_philos == 1)
+		ft_eat_alone(philo);
 	ft_philo_routine(philo);
 	return (philo);
 }

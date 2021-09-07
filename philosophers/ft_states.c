@@ -6,7 +6,7 @@
 /*   By: ysoroko <ysoroko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/18 12:03:02 by ysoroko           #+#    #+#             */
-/*   Updated: 2021/09/07 15:41:01 by ysoroko          ###   ########.fr       */
+/*   Updated: 2021/09/07 15:54:06 by ysoroko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,12 @@
 /// He will have one fork only (because one fork per philosopher)
 /// He will grab the fork, wait for the second one, but since there is none
 /// He will eventually die
-static int	ft_eat_alone(t_philo *philo)
+int	ft_eat_alone(t_philo *philo)
 {
 	pthread_mutex_lock(philo->left_fork);
 	ft_print_status(philo, FORK);
-	ft_msleep(philo->t_to_die + 10);
+	while (1)
+		ft_msleep(philo->t_to_die + 10);
 	pthread_mutex_unlock(philo->left_fork);
 	return (0);
 }
@@ -55,19 +56,16 @@ static void	ft_lock_forks(t_philo *ph)
 {
 	if (ph->philo_number % 2)
 	{
-		pthread_mutex_lock(ph->left_fork);
-		ft_print_status(ph, FORK);
 		usleep(500);
+		pthread_mutex_lock(ph->left_fork);
 		pthread_mutex_lock(ph->right_fork);
-		ft_print_status(ph, FORK);
 	}
 	else if (!(ph->philo_number % 2))
 	{
 		pthread_mutex_lock(ph->right_fork);
-		ft_print_status(ph, FORK);
 		pthread_mutex_lock(ph->left_fork);
-		ft_print_status(ph, FORK);
 	}
+	ft_print_status(ph, FORK);
 }
 
 /// Philosopher's "eating" state
@@ -78,8 +76,6 @@ static void	ft_lock_forks(t_philo *ph)
 /// Returns 0 in case of success, -1 in case of error
 int	ft_eat(t_philo *philo)
 {
-	if (philo->n_philos == 1)
-		return (ft_eat_alone(philo));
 	ft_lock_forks(philo);
 	ft_print_status(philo, EATING);
 	ft_update_last_time_ate(philo);
