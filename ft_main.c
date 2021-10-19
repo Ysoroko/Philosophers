@@ -6,7 +6,7 @@
 /*   By: ysoroko <ysoroko@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/16 11:04:33 by ysoroko           #+#    #+#             */
-/*   Updated: 2021/09/07 15:13:57 by ysoroko          ###   ########.fr       */
+/*   Updated: 2021/10/19 10:53:19 by ysoroko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,11 @@ static pthread_t	*ft_initialize_threads(t_main_args *arg, t_philo **p)
 		return (NULL);
 	while (--i >= 0)
 		if (pthread_detach(ret[i]))
-			return (ft_free(ret, "Failed to join a thread", NULL));
-	if (pthread_join(*death, NULL))
-		return (NULL);
+			return (ft_free(ret, "Failed to detach a thread", NULL));
+	//
+	//if (pthread_join(*death, NULL))
+	//	return (NULL);
+	// STOP
 	return (ret);
 }
 
