@@ -1,19 +1,28 @@
+
+
 # Philosophers
 "Multithreading with a touch of philosophy"
+### The project covers:
 
-#### N philosophers are sitting around a table with a spaghetti bowl in the middle
-#### There is a fork between every pair of philosophers and 2 forks are required to eat
-#### Each philosopher will try to grab 2 forks (if available), then eat, then sleep, then think
-#### [eat_milliseconds] are required to eat, [sleep_milliseconds] are required to sleep and after [die_milliseconds] without eating a philosopher will die.
-#### Each philosopher is a thread and every fork is a mutex.
-#### Every change of state of a philosopher is displayed on standard output, along with the time when the change occurs
+- Multithreading
+- Mutexes 
+- Overall parallel execution
+
+
+### Implemented behaviour:
+- N philosophers are sitting around a table with a spaghetti bowl in the middle
+- There is a fork between every pair of philosophers and 2 forks are required to eat
+- Each philosopher will try to grab 2 forks (if available), then eat, then sleep, then think
+- [eat_milliseconds] are required to eat, [sleep_milliseconds] are required to sleep and after [die_milliseconds] without eating a philosopher will die.
+- Each philosopher is a thread and every fork is a mutex.
+- Every change of state of a philosopher is displayed on standard output, along with the time when the change occurs
 
 ## Try it out:
--1) Git clone this repository
--2) While inside the repository in the terminal run the command "Make" to create the executable "philo"
--3) Launch the executable with the following arguments:
-- ./philo [n_philosophers] [time_to_die_in_ms] [time_to_eat_in_ms] [time_to_sleep_in_ms]
-- An optionnal 5th argument [n_times_to_eat] can be provided. With it, after each philosopher has eaten [n_times_to_eat] the simulation will stop.
+1) Git clone this repository
+2) While inside the repository in the terminal run the command "Make" to create the executable "philo"
+3) Launch the executable with the following arguments:
+  - ./philo [n_philosophers] [time_to_die_in_ms] [time_to_eat_in_ms] [time_to_sleep_in_ms]
+  - An optionnal 5th argument [n_times_to_eat] can be provided. With it, after each philosopher has eaten [n_times_to_eat] the simulation will stop.
 
 ⚠️ Note: The project is very depending on the environement and its ressources. They can induce a delay in thread execution which might invalid the expected behaviour.
 
